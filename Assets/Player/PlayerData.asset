@@ -35,6 +35,6 @@ MonoBehaviour:
   jumpCooldown: 0.3
   aerialDriftModifier: 0.02
   maxAerialSpeed: 0.5
-  jumpReleaseTimeAllowance: 0.15
+  jumpReleaseTimeAllowance: 0.1
   climbSpeed: 24
   relaseChainForce: 0.6

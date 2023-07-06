@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isRangedWeapon: 1
   damage: 1
-  weaponSprite: {fileID: 21300000, guid: 372b5703f2f1a3947ba01555f71505d9, type: 3}
+  weaponSprite: {fileID: 21300000, guid: 4b395b3245ce637448564fb05ddc8ade, type: 3}

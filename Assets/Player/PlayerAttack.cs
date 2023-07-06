@@ -173,12 +173,10 @@ public class PlayerAttack : MonoBehaviour, IEventListener
         if (playerInput.performAttack != 0)
         {
             attackActive.Raise();
-            isMeleeAttacking = true;
         }
         else
         {
             attackInactive.Raise();
-            isMeleeAttacking = false;
         }
     }
     private void OnEnable()

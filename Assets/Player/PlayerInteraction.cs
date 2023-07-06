@@ -28,6 +28,7 @@ public class PlayerInteraction : MonoBehaviour, IEventListener
     PlayerInput playerInput;
     PlayerLocomotion playerLocomotion;
     private readonly Collider2D[] interactableColliders = new Collider2D[2];
+    public List<GameObject> interactableObjs = new List<GameObject>();
     [SerializeField] private int numberOfInteractablesInRange;
 
     public GameObject itemObject;

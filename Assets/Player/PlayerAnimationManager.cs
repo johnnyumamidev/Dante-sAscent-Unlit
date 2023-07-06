@@ -22,6 +22,7 @@ public class PlayerAnimationManager : MonoBehaviour, IEventListener
     public List<string> animStates = new List<string> { "Idle", "Run", "Jump", "Falling" };
 
     public Transform weaponHolder;
+
     private void Awake()
     {
         spriteRenderer = spriteObject.GetComponent<SpriteRenderer>();
@@ -50,15 +51,17 @@ public class PlayerAnimationManager : MonoBehaviour, IEventListener
         currentHealth = (int)playerHealth.currentHealth;
         weaponHolder.transform.position = weaponPosition.position;
 
-        SetAnimationBasedOnPlayerState();
+        DetermineAnimationStates();
+        DetermineAttackState();
 
         animStateIndex = Mathf.Clamp(animStateIndex, 0, animStates.Count-1);
         animator.CrossFade(animStates[animStateIndex], 0, 0);
     }
 
-    private void SetAnimationBasedOnPlayerState()
+
+    private void DetermineAnimationStates()
     {
-        if (playerLocomotion.isGrounded && playerInput.movementInput.x != 0) { animStateIndex = 8; }
+        if (playerLocomotion.isGrounded && playerInput.movementInput.x != 0) { animStateIndex = 7; }
         else if (!playerLocomotion.isGrounded && !playerLocomotion.isNearChain) { animStateIndex = 2; }
         else if (playerLocomotion.isNearChain && playerInput.movementInput == Vector2.zero && playerLocomotion.isGrounded) { animStateIndex = 4; }
         else if (playerLocomotion.isClimbing && !playerLocomotion.isGrounded) { animStateIndex = 5; }
@@ -67,7 +70,7 @@ public class PlayerAnimationManager : MonoBehaviour, IEventListener
 
         if (playerLocomotion.isDodging)
         {
-            animStateIndex = 9;
+            animStateIndex = 8;
             return;
         }
         if (playerLocomotion.isClimbing)
@@ -76,10 +79,44 @@ public class PlayerAnimationManager : MonoBehaviour, IEventListener
             return;
         }
 
-        if (playerInput.performAttack != 0 && !playerAttack.currentWeapon.GetComponent<Weapon>().weaponData.isRangedWeapon) animStateIndex = 7;
+        if (playerInput.performAttack != 0 && !playerAttack.currentWeapon.GetComponent<Weapon>().weaponData.isRangedWeapon)
+        {
+            isAttacking = true;
+            if (comboReady) IncreaseComboStep();
+        }
 
-        if (playerHealth.playerHurtState) animStateIndex = 10;
-        if (playerHealth.currentHealth == 0) animStateIndex = 11;
+        if (playerHealth.playerHurtState) animStateIndex = 9;
+        if (playerHealth.currentHealth == 0) animStateIndex = 10;
+    }
+
+    bool comboReady = false;
+    [SerializeField] bool isAttacking = false;
+
+    public float attackCooldownTime = 2f;
+    public static int currentComboStep;
+    public int maxComboAttacks;
+
+    public void SetComboState(bool value)
+    {
+        comboReady = value;
+        isAttacking = value;
+        if (!comboReady) currentComboStep = 0;
+        Debug.Log("combo ready: " + value + "/" + currentComboStep);
+    }
+
+    public void IncreaseComboStep()
+    {
+        currentComboStep++;
+        comboReady = false;
+    }
+    private void DetermineAttackState()
+    {
+        playerAttack.isMeleeAttacking = isAttacking;
+        if (!isAttacking) return;
+        if (currentComboStep >= 0) animStateIndex = 11;
+        if (currentComboStep >= 1) animStateIndex = 12;
+        if (currentComboStep >= 2) animStateIndex = 13;
+        Debug.Log(currentComboStep);
     }
 
     [System.Serializable]
