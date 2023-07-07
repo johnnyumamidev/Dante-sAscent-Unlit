@@ -21,11 +21,11 @@ public class DestructibleObject : MonoBehaviour,IDamageable
         damageMask.SetActive(false);
         objectRigidbody = GetComponent<Rigidbody2D>();  
     }
-    public void TakeDamage()
+    public void TakeDamage(float damage)
     {
         Debug.Log(gameObject.name + " took damage");
         isHurt = true;
-        objectHealth--;
+        objectHealth -= damage;
         StartCoroutine(HurtFlash());
     }
     float timer = 0;

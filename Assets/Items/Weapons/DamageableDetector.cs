@@ -5,12 +5,57 @@ using UnityEngine;
 public class DamageableDetector : MonoBehaviour
 {
     public float force = 25f;
-    private void OnTriggerEnter2D(Collider2D collision)
+    public float hitboxRadius = 0.5f;
+
+    public float damage;
+    bool damageDealt = false;
+    public float damageTimer = 0.25f;
+
+    private void OnEnable()
     {
-        IDamageable damageable = collision.GetComponent<IDamageable>();
-        if (damageable != null)
+        damageDealt = false;
+    }
+    private void Update()
+    {
+        DetectTargetsWithinHitbox();
+    }
+
+    private void DetectTargetsWithinHitbox()
+    {
+        Collider2D[] hitbox = Physics2D.OverlapCircleAll(transform.position, hitboxRadius);
+
+        if (hitbox.Length > 0 && !damageDealt)
         {
-            damageable.TakeDamage();
+            DealDamage(hitbox);
+            damageDealt = true;
         }
+    }
+
+    private void DealDamage(Collider2D[] hitbox)
+    {
+        foreach (Collider2D col in hitbox)
+        {
+            IDamageable damageable = col.GetComponent<IDamageable>();
+            if (damageable != null)
+            {
+                damageable.TakeDamage(damage);
+            }
+
+            Enemy enemy = col.GetComponent<Enemy>();
+            if (enemy != null)
+            {
+                Vector2 enemyPosition = col.transform.position;
+                Vector2 attackPosition = transform.position;
+                Vector2 directionToEnemy = new Vector2(enemyPosition.x - attackPosition.x, 0);
+                Rigidbody2D enemyRigidbody = col.GetComponent<Rigidbody2D>();
+                enemyRigidbody.AddForce(directionToEnemy.normalized * force, ForceMode2D.Impulse);
+                Debug.Log("enemy hit: " + directionToEnemy);
+            }
+        }
+    }
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, hitboxRadius);
     }
 }

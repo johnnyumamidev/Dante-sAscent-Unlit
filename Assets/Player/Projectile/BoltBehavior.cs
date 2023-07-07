@@ -13,6 +13,8 @@ public class BoltBehavior : MonoBehaviour, ICollectable
     public Vector2 boltDirection;
 
     [SerializeField] GameEvent collectBolt;
+    public float damage = 2f;
+
     private void Awake()
     {
         boltRigidbody = GetComponent<Rigidbody2D>();
@@ -34,15 +36,27 @@ public class BoltBehavior : MonoBehaviour, ICollectable
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.gameObject.tag != "Player")
+        if (collision.gameObject.tag == "Player") return;
+
+        Rigidbody2D bolt = GetComponent<Rigidbody2D>();
+        bolt.freezeRotation = true;
+        bolt.velocity = Vector2.zero;
+        bolt.isKinematic = true;
+        Vector2 point;
+        point = collision.GetContact(0).point;
+        transform.position = point;
+
+        IDamageable damageable = collision.gameObject.GetComponent<IDamageable>();
+        if (damageable != null) damageable.TakeDamage(damage);
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        IDamageable damageable = collision.GetComponent<IDamageable>();
+        if (damageable != null)
         {
-            Rigidbody2D bolt = GetComponent<Rigidbody2D>();
-            bolt.freezeRotation = true;
-            bolt.velocity = Vector2.zero;
-            bolt.isKinematic = true;
-            Vector2 point;
-            point = collision.GetContact(0).point;
-            transform.position = point;
+            damageable.TakeDamage(damage);
+            Destroy(gameObject);
         }
     }
     public void Collect()

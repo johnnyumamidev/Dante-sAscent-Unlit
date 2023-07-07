@@ -494,6 +494,27 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: noPantsSheet_18
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 67d6d06154f969346b748850fe74238a
+      internalID: -1491830566
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -510,6 +531,7 @@ TextureImporter:
       noPantsSheet_9: -1768663639
       noPantsSheet_15: -432519057
       noPantsSheet_3: -1956658755
+      noPantsSheet_18: -1491830566
       noPantsSheet_12: -2125183460
       noPantsSheet_4: -1780118429
       noPantsSheet_11: 681410230

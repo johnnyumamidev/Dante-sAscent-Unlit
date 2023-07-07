@@ -5,14 +5,20 @@ using UnityEngine;
 public class AttackForces : MonoBehaviour
 {
     public float force = 10f;
+    [SerializeField] PlayerLocomotion playerLocomotion;
     [SerializeField] Rigidbody2D playerRigidbody;
-    void Start()
+    Vector2 forceDirection;
+    private void Awake()
     {
-        
+        if(playerLocomotion == null) playerLocomotion = GetComponentInParent<PlayerLocomotion>();
+    }
+    void Update()
+    {
+        if (playerLocomotion.facingRight) forceDirection = Vector2.right;
+        else { forceDirection = Vector2.left; }
     }
     public void AddForce()
     {
-        Debug.Log("add force on attack");
-        playerRigidbody.AddForce(Vector2.right * force, ForceMode2D.Impulse);
+        playerRigidbody.AddForce(forceDirection * force, ForceMode2D.Impulse);
     }
 }
