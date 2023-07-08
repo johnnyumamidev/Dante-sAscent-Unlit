@@ -19,8 +19,8 @@ MonoBehaviour:
   playerMass: 3
   maxSpeed: 50
   moveSpeed: 325
-  jumpForce: 50
-  dodgeForce: 25
+  jumpForce: 40
+  dodgeForce: 22
   groundCheckRadius: 0.15
   groundLayer:
     serializedVersion: 2

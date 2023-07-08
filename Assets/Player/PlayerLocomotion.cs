@@ -17,6 +17,7 @@ public class PlayerLocomotion : MonoBehaviour
     float dodgeRollCooldownLength = 1f;
     public float dodgeRollStartup = 0.3f;
     [SerializeField] Vector2 dodgeDirection = new Vector2(1, 0.5f);
+    [SerializeField] float invincibilityTime;
     float _moveSpeed;
     [SerializeField]private int remainingJumps;
     [SerializeField] float timeSinceFalling;
@@ -92,8 +93,12 @@ public class PlayerLocomotion : MonoBehaviour
 
         if ((!facingRight && dodgeDirection.x > 0) || (facingRight && dodgeDirection.x < 0))
             dodgeDirection.x *= -1;
+        
         rigidBody.AddForce(dodgeDirection * playerData.dodgeForce, ForceMode2D.Impulse);
-
+        Collider2D playerCollider = GetComponent<Collider2D>();
+        playerCollider.isTrigger = true;
+        yield return new WaitForSeconds(invincibilityTime);
+        playerCollider.isTrigger = false;
         while (isDodging)
         {
             yield return new WaitForSeconds(dodgeRollCooldownLength);
@@ -193,6 +198,7 @@ public class PlayerLocomotion : MonoBehaviour
     }
     bool onOneWayPlatform = false;
     GameObject oneWayPlatform;
+
     private void HandleGroundedCheck()
     {
         Collider2D grounded = Physics2D.OverlapCircle(playerPosition + playerData.groundCheckOffset, playerData.groundCheckRadius, playerData.groundLayer);

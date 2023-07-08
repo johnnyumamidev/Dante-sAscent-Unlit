@@ -8,6 +8,8 @@ public class PlayerHealth : MonoBehaviour, IEventListener
     [Header("GameEvents")]
     [SerializeField] GameEvent playerDeathEvent;
     [SerializeField] GameEvent playerDamageEvent;
+    [SerializeField] GameEvent invincibilityEnabled;
+    [SerializeField] GameEvent invincibilityDisabled;
     [SerializeField] UnityEvent playerDamage;
 
     [Header("Health")]
@@ -59,8 +61,6 @@ public class PlayerHealth : MonoBehaviour, IEventListener
         else { hurtTimer = 0; }
         if (hurtTimer >= playerData.hurtStateTime) playerHurtState = false;
     }
-    public Vector2 forceDirection = Vector2.up;
-    public float knockbackForce = 15f;
     public void TakeDamage()
     {
         if (!isInvincible)
@@ -69,7 +69,10 @@ public class PlayerHealth : MonoBehaviour, IEventListener
             playerHurtState = true;
         }
     }
-
+    public void ActivateInvincibility(bool active)
+    {
+        isInvincible = active;
+    }
     public void Retry()
     {
         SetHealthToFull();
@@ -78,13 +81,19 @@ public class PlayerHealth : MonoBehaviour, IEventListener
     private void OnEnable()
     {
         playerDamageEvent.RegisterListener(this);
+        invincibilityEnabled?.RegisterListener(this);
+        invincibilityDisabled?.RegisterListener(this);  
     }
     private void OnDisable()
     {
         playerDamageEvent.UnregisterListener(this);
+        invincibilityEnabled?.UnregisterListener(this);
+        invincibilityDisabled?.UnregisterListener(this);
     }
     public void OnEventRaised(GameEvent gameEvent)
     {
-        playerDamage?.Invoke();
+        if(gameEvent == invincibilityEnabled) { ActivateInvincibility(true); }
+        if(gameEvent == invincibilityDisabled) { ActivateInvincibility(false); }
+        if(gameEvent == playerDamageEvent) playerDamage?.Invoke();
     }
 }
