@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class DamageableDetector : MonoBehaviour
 {
+    [SerializeField] Transform player;
     public float force = 25f;
     public float hitboxRadius = 0.5f;
 
@@ -11,6 +12,7 @@ public class DamageableDetector : MonoBehaviour
     bool damageDealt = false;
     public float damageTimer = 0.25f;
 
+    Vector2 forceDirection = Vector2.zero;
     private void OnEnable()
     {
         damageDealt = false;
@@ -45,10 +47,12 @@ public class DamageableDetector : MonoBehaviour
             if (enemy != null)
             {
                 Vector2 enemyPosition = col.transform.position;
-                Vector2 attackPosition = transform.position;
-                Vector2 directionToEnemy = new Vector2(enemyPosition.x - attackPosition.x, 0);
+                Vector2 playerPosition = player.position;
+                Vector2 directionToEnemy = new Vector2(enemyPosition.x - playerPosition.x, 0);
                 Rigidbody2D enemyRigidbody = col.GetComponent<Rigidbody2D>();
-                enemyRigidbody.AddForce(directionToEnemy.normalized * force, ForceMode2D.Impulse);
+                if (directionToEnemy.x > 0) forceDirection = Vector2.right;
+                else { forceDirection = Vector2.left; }
+                enemyRigidbody.AddForce(forceDirection * force, ForceMode2D.Impulse);
                 Debug.Log("enemy hit: " + directionToEnemy);
             }
         }

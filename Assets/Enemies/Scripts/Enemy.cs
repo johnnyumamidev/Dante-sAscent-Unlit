@@ -8,37 +8,57 @@ public class Enemy : MonoBehaviour
 
     EnemyDetection enemyDetection;
     EnemyMovement enemyMovement;
+    EnemyAttack enemyAttack;
+    EnemyAnimation enemyAnimation;
     DestructibleObject destructibleData;
     private void Awake()
     {
-        transform.name = enemyData.enemyName;
-
         enemyDetection = GetComponent<EnemyDetection>();
         enemyMovement = GetComponent<EnemyMovement>();
+        enemyAttack= GetComponent<EnemyAttack>();
+        enemyAnimation = GetComponentInChildren<EnemyAnimation>();
         destructibleData = GetComponent<DestructibleObject>();
 
+        transform.name = enemyData.enemyName;
         destructibleData.maxObjectHealth = enemyData.maxHealth;
     }
 
     private void Update()
     {
-        enemyDetection.SetAttackRange();
         PerformCurrentAction();
+    }
+    private void FixedUpdate()
+    {
+        PerformMovement();
+    }
+
+    private void PerformMovement()
+    {
+        if (enemyDetection?.player != null && !enemyDetection.attackReady)
+        {
+            enemyMovement.MoveTowardsTarget();
+            enemyAnimation.animStateIndex = 2;
+        }
     }
 
     private void PerformCurrentAction()
     {
-        if(enemyDetection?.player == null) 
+        enemyDetection.DetectTargetsWithinAttackRange();
+
+        if (enemyDetection?.player == null) 
         {
             enemyDetection.SearchForPlayer();
+            enemyAnimation.animStateIndex = 1;
         }
-        else if (enemyDetection.playerWithinRange)
+        else if (enemyDetection.attackReady)
         {
-            Debug.Log("attack target!!");
+            enemyAttack.DetectTargetWithinHitbox();
+            enemyAnimation.animStateIndex = 3;
         }
-        else
+        
+        if (enemyDetection.playerFound && enemyDetection.player == null)
         {
-            enemyMovement.MoveTowardsTarget();
+            enemyAnimation.animStateIndex = 4;
         }
     }
 }

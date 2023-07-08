@@ -21,13 +21,13 @@ MonoBehaviour:
   moveSpeed: 325
   jumpForce: 50
   dodgeForce: 25
-  groundCheckRadius: 0.25
+  groundCheckRadius: 0.15
   groundLayer:
     serializedVersion: 2
     m_Bits: 520
   platform:
     serializedVersion: 2
-    m_Bits: 512
+    m_Bits: 768
   groundCheckOffset: {x: 0, y: -0.5}
   maxJumps: 1
   coyoteTime: 0.3

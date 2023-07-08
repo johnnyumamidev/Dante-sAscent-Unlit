@@ -196,7 +196,7 @@ public class PlayerLocomotion : MonoBehaviour
     private void HandleGroundedCheck()
     {
         Collider2D grounded = Physics2D.OverlapCircle(playerPosition + playerData.groundCheckOffset, playerData.groundCheckRadius, playerData.groundLayer);
-
+        isGrounded = grounded;
         if (grounded && grounded.CompareTag("Slope") && playerCollider.IsTouching(grounded))
         {
             isOnSlope = true;
@@ -212,11 +212,6 @@ public class PlayerLocomotion : MonoBehaviour
         else
         {
             onOneWayPlatform = false;
-        }
-
-        if (rigidBody.velocity.y <= 0 && timeSinceFalling >= playerData.coyoteTime || isClimbing)
-        {
-            isGrounded = grounded;
         }
 
         if (isGrounded)

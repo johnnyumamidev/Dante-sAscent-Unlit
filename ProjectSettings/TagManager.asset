@@ -8,6 +8,8 @@ TagManager:
   - Holdable
   - Chain
   - Slope
+  - Enemy
+  - HItbox
   layers:
   - Default
   - TransparentFX
@@ -17,7 +19,7 @@ TagManager:
   - UI
   - Player
   - Interactable
-  - 
+  - Platform
   - 
   - 
   - 

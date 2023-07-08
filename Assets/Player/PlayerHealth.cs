@@ -59,14 +59,14 @@ public class PlayerHealth : MonoBehaviour, IEventListener
         else { hurtTimer = 0; }
         if (hurtTimer >= playerData.hurtStateTime) playerHurtState = false;
     }
-
+    public Vector2 forceDirection = Vector2.up;
+    public float knockbackForce = 15f;
     public void TakeDamage()
     {
         if (!isInvincible)
         {
             currentHealth--;
             playerHurtState = true;
-            Debug.Log("damage taken, total health: " + currentHealth);
         }
     }
 

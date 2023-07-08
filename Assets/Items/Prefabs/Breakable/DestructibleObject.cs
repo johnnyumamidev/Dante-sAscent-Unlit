@@ -17,13 +17,16 @@ public class DestructibleObject : MonoBehaviour,IDamageable
     [SerializeField] bool isHurt = false;
     private void Awake()
     {
-        objectHealth = maxObjectHealth;
         damageMask.SetActive(false);
         objectRigidbody = GetComponent<Rigidbody2D>();  
     }
+    private void Start()
+    {
+        objectHealth = maxObjectHealth;
+    }
     public void TakeDamage(float damage)
     {
-        Debug.Log(gameObject.name + " took damage");
+        Debug.Log(gameObject.name + " took damage // remaining health: " + objectHealth);
         isHurt = true;
         objectHealth -= damage;
         StartCoroutine(HurtFlash());
