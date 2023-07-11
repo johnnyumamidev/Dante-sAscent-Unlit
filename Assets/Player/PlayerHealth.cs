@@ -17,7 +17,7 @@ public class PlayerHealth : MonoBehaviour, IEventListener
     float maxHealth;
     public float currentHealth;
     public bool playerHurtState = false;
-    bool isInvincible;
+    public bool isInvincible = false;
     [SerializeField] float hurtTimer;
 
     public GameObject bloodParticles;
@@ -51,15 +51,21 @@ public class PlayerHealth : MonoBehaviour, IEventListener
 
     private void HandleHurtState()
     {
-        isInvincible = false;
         if (playerHurtState)
         {
             isInvincible = true;
             bloodParticles.SetActive(true);
             hurtTimer += Time.deltaTime;
         }
-        else { hurtTimer = 0; }
-        if (hurtTimer >= playerData.hurtStateTime) playerHurtState = false;
+        else
+        {
+            hurtTimer = 0;
+        }
+        if (hurtTimer >= playerData.hurtStateTime)
+        {
+            playerHurtState = false;
+            isInvincible = false;
+        }
     }
     public void TakeDamage()
     {
@@ -68,10 +74,6 @@ public class PlayerHealth : MonoBehaviour, IEventListener
             currentHealth--;
             playerHurtState = true;
         }
-    }
-    public void ActivateInvincibility(bool active)
-    {
-        isInvincible = active;
     }
     public void Retry()
     {
@@ -92,8 +94,6 @@ public class PlayerHealth : MonoBehaviour, IEventListener
     }
     public void OnEventRaised(GameEvent gameEvent)
     {
-        if(gameEvent == invincibilityEnabled) { ActivateInvincibility(true); }
-        if(gameEvent == invincibilityDisabled) { ActivateInvincibility(false); }
         if(gameEvent == playerDamageEvent) playerDamage?.Invoke();
     }
 }

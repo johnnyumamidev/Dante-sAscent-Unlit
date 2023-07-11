@@ -30,6 +30,7 @@ public class PlayerManager : MonoBehaviour
         playerHealth.HandleHealth();
         playerAttack.HandleAllAttackActions();
         playerInput.HandleAllInputs();
+        playerLocomotion.HandleGroundedCheck();
     }
 
     private void FixedUpdate()

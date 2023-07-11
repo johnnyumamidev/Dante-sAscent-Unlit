@@ -15,6 +15,7 @@ public class Enemy : MonoBehaviour
 
     bool noHealthRemaining;
     bool stunned = false;
+    bool taunting = false;
     [SerializeField] float stunDuration;
 
     private void Awake()
@@ -50,10 +51,19 @@ public class Enemy : MonoBehaviour
     {
         if (noHealthRemaining) return;
         if (stunned) return;
+        if (enemyDetection.paused)
+        {
+            enemyMovement.PauseMovement();
+            return;
+        }
         PerformMovement();
     }
     private void DeterminePrimaryAction()
     {
+        if (enemyDetection.searching) enemyAnimation.animStateIndex = 1;
+
+        if (taunting) enemyAnimation.animStateIndex = 7;
+
         if (enemyDetection?.player == null)
         {
             enemyDetection.SearchForPlayer();
@@ -77,12 +87,6 @@ public class Enemy : MonoBehaviour
         {
             enemyMovement.MoveTowardsTarget(enemyDetection.player);
             enemyAnimation.animStateIndex = 2;
-        }
-        
-        if (enemyDetection.paused)
-        {
-            enemyMovement.PauseMovement();
-            enemyAnimation.animStateIndex = 1;
         }
     }
 
@@ -114,6 +118,11 @@ public class Enemy : MonoBehaviour
     public void StunOnDamageTaken()
     {
         stunned = true;
+    }
+
+    public void Taunt(bool active)
+    {
+        taunting = active;
     }
     //===================================//
 

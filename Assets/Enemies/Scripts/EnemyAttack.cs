@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class EnemyAttack : MonoBehaviour
 {
@@ -12,6 +13,10 @@ public class EnemyAttack : MonoBehaviour
 
     public float attackKnockback = 500f;
     Vector2 knockbackDirection= Vector2.zero;
+
+    [SerializeField] UnityEvent onHit;
+    [SerializeField] UnityEvent onHitboxActive;
+
     public void DetectTargetWithinHitbox()
     {
         Collider2D[] _hitbox = Physics2D.OverlapCircleAll(hitbox.position, hitboxRadius, playerLayer);
@@ -21,6 +26,7 @@ public class EnemyAttack : MonoBehaviour
             foreach(Collider2D collider in _hitbox)
             {
                 PlayerHealth playerHealth = collider.gameObject.GetComponent<PlayerHealth>();
+                if (playerHealth.isInvincible) return;
                 if (playerHealth != null) playerHealth.TakeDamage();
 
                 Rigidbody2D playerRb = collider.gameObject.GetComponent<Rigidbody2D>();
@@ -30,6 +36,7 @@ public class EnemyAttack : MonoBehaviour
                 if (playerRb != null) playerRb.AddForce(knockbackDirection * attackKnockback * 1000);
             }
             hitboxEnabled = false;
+            onHit?.Invoke();
             StartCoroutine(ActivateHitbox());
         }
     }
@@ -41,6 +48,7 @@ public class EnemyAttack : MonoBehaviour
         {
             yield return cooldown;
             hitboxEnabled = true;
+            onHitboxActive?.Invoke();
         }
     }
 

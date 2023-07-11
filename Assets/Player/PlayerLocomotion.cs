@@ -47,7 +47,6 @@ public class PlayerLocomotion : MonoBehaviour
     {
         playerPosition = transform.position;
         HandleGravity(playerData.playerGravityScale);
-        HandleGroundedCheck();
     }
 
     private void HandleGravity(float setGravity)
@@ -88,6 +87,7 @@ public class PlayerLocomotion : MonoBehaviour
     private IEnumerator DodgeRollCooldown()
     {
         isDodging = true;
+        playerHealth.isInvincible = true;
         yield return new WaitForSeconds(dodgeRollStartup);
 
         if ((!facingRight && dodgeDirection.x > 0) || (facingRight && dodgeDirection.x < 0))
@@ -102,13 +102,14 @@ public class PlayerLocomotion : MonoBehaviour
         {
             yield return new WaitForSeconds(dodgeRollCooldownLength);
             isDodging = false;
+            playerHealth.isInvincible = false;
         }
     }
 
     private void HandleHurtLaunch(bool hurtState)
     {
         if (!hurtState) return;
-        Vector2 hurtForceDirection = Vector2.zero;
+        Vector2 hurtForceDirection;
         if(facingRight) hurtForceDirection = Vector2.right;
         else { hurtForceDirection = Vector2.left; }
         Vector2 horizontalForce = new Vector2(hurtForceDirection.x, 0);
@@ -198,7 +199,7 @@ public class PlayerLocomotion : MonoBehaviour
     bool onOneWayPlatform = false;
     GameObject oneWayPlatform;
 
-    private void HandleGroundedCheck()
+    public void HandleGroundedCheck()
     {
         Collider2D footCollider = Physics2D.OverlapCircle(playerPosition + playerData.groundCheckOffset, playerData.groundCheckRadius);
         isGrounded = footCollider;

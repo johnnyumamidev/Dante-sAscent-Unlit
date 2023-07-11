@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyType: Ground
   enemyName: Skeleton
-  speed: 185
+  speed: 200
   maxHealth: 6
   detectionRadius: 10
   detectionLayer:

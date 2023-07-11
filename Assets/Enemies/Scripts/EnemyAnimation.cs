@@ -26,7 +26,8 @@ public class EnemyAnimation : MonoBehaviour
             parent.name + "Attack",
             parent.name + "Found",
             parent.name + "Death",
-            parent.name + "RangeAttack"
+            parent.name + "RangeAttack",
+            parent.name + "Taunt"
         };
     }
     // Update is called once per frame

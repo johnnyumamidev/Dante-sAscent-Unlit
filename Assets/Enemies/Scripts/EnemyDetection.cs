@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,6 +12,7 @@ public class EnemyDetection : MonoBehaviour
     public Transform player;
     public bool playerFound = false;
     public bool paused = false;
+    public bool searching = false;
 
     [SerializeField] GameObject exclamation;
     [SerializeField] float reactionTime;
@@ -50,6 +52,7 @@ public class EnemyDetection : MonoBehaviour
     IEnumerator PauseBeforeTurnAround(Vector2 direction)
     {
         paused = true;
+        searching = true;
         exclamation.SetActive(true);
         while (paused)
         {
@@ -65,6 +68,7 @@ public class EnemyDetection : MonoBehaviour
             exclamation.SetActive(false);
             yield return new WaitForSeconds(transitionTime);
             paused = false;
+            searching = false;
         }
     }
     public void ShootPlayerDetectionRaycast()
@@ -77,15 +81,22 @@ public class EnemyDetection : MonoBehaviour
 
             Vector2 castPoint = new Vector2(transform.position.x, transform.position.y + FOVOffset);
             Vector2 rayDirection = Vector2.zero;
+            bool playerBehind = (playerPos.x > 0 && !enemyMovement.isFacingRight) || (playerPos.x < 0 && enemyMovement.isFacingRight);
             if(enemyMovement.isFacingRight) rayDirection = Vector2.right;
             else { rayDirection = Vector2.left; }
             RaycastHit2D ray = Physics2D.Raycast(castPoint, rayDirection, data.detectionRadius, data.detectionLayer);
 
-            if (!ray)
+            if (!ray && playerBehind)
             {
                 StartCoroutine(PauseBeforeTurnAround(directionToPlayer));
             }
         }
+    }
+
+
+    public void PauseDetection(bool active)
+    {
+        paused = active;
     }
 
     [SerializeField] float FOVOffset = 0.3f;

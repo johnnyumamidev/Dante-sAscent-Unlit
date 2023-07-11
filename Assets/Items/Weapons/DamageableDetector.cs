@@ -52,7 +52,7 @@ public class DamageableDetector : MonoBehaviour
                 Rigidbody2D enemyRigidbody = col.GetComponent<Rigidbody2D>();
                 if (directionToEnemy.x > 0) forceDirection = Vector2.right;
                 else { forceDirection = Vector2.left; }
-                enemyRigidbody.AddForce(forceDirection * force * 1000, ForceMode2D.Impulse);
+                enemyRigidbody.AddForce(forceDirection * force * 100, ForceMode2D.Impulse);
                 Debug.Log("enemy hit: " + directionToEnemy);
             }
         }
