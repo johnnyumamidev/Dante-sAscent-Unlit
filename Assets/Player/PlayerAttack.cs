@@ -39,8 +39,10 @@ public class PlayerAttack : MonoBehaviour, IEventListener
     public void HandleAllAttackActions()
     {
         AssignEquippedWeaponToSlot();
-        if (playerInput.performSwitch != 0 && switchWeaponReady)
+        if (switchWeaponReady)
         {
+            if ((playerInput.performAttack != 0 && currentWeapon != meleeWeapon) ||
+                (playerInput.performShoot != 0 && currentWeapon != rangedWeapon))
             SwitchBetweenMeleeAndRangedWeapon();
         }
 

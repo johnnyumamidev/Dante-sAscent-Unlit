@@ -98,7 +98,8 @@ GameObject:
   - component: {fileID: 8554157839760119431}
   - component: {fileID: -686628004116431908}
   - component: {fileID: 1321275758}
-  - component: {fileID: 8567951295805630035}
+  - component: {fileID: 634023376436420129}
+  - component: {fileID: -3005776454352866614}
   m_Layer: 0
   m_Name: BreakableObject
   m_TagString: Untagged
@@ -193,6 +194,33 @@ MonoBehaviour:
   flashTime: 0.05
   damageEffectLength: 0.25
   isHurt: 0
+  healthDepleted:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 634023376436420129}
+        m_TargetAssemblyTypeName: CollectableSpawner, Assembly-CSharp
+        m_MethodName: SpawnCollectable
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 6403251208844098625}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!61 &8554157839760119431
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -291,7 +319,7 @@ SpriteMask:
   m_BackSortingOrder: 0
   m_IsCustomRangeActive: 0
   m_SpriteSortPoint: 0
---- !u!114 &8567951295805630035
+--- !u!114 &634023376436420129
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -300,10 +328,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 6403251208844098625}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0291b84c804b34b4689f243141da8597, type: 3}
+  m_Script: {fileID: 11500000, guid: 18f5534d028ce5b479d530ee5c99e3f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sprites:
-  - {fileID: 21300000, guid: ec9eac076d6eafb409ab78a19f552062, type: 3}
-  - {fileID: 21300000, guid: 7ce84c8b2f7576144aaf4abd8f38c710, type: 3}
-  - {fileID: 21300000, guid: 2de6ad73e6733114fa532b40b9ab4e9b, type: 3}
+  containerData: {fileID: 11400000, guid: d8faa8bc8c506264a96644e2d2f2be56, type: 2}
+--- !u!114 &-3005776454352866614
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6403251208844098625}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48f5c2111015fff4099e6b0a668b3383, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  containers:
+  - {fileID: 11400000, guid: d8faa8bc8c506264a96644e2d2f2be56, type: 2}
+  - {fileID: 11400000, guid: a2aa8d32f2782dc4fb6af77e51249e66, type: 2}
+  - {fileID: 11400000, guid: 2692faad29c0c5d44b8a2239b948df9e, type: 2}

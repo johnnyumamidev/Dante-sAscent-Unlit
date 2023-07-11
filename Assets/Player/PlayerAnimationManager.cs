@@ -115,8 +115,6 @@ public class PlayerAnimationManager : MonoBehaviour, IEventListener
         if (!isAttacking) return;
         if (currentComboStep >= 0) animStateIndex = 11;
         if (currentComboStep >= 1) animStateIndex = 12;
-        if (currentComboStep >= 2) animStateIndex = 13;
-        Debug.Log(currentComboStep);
     }
 
     [System.Serializable]

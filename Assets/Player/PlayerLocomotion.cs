@@ -14,7 +14,7 @@ public class PlayerLocomotion : MonoBehaviour
 
     public bool isGrounded;
     public bool isDodging;
-    float dodgeRollCooldownLength = 1f;
+    public float dodgeRollCooldownLength = 1f;
     public float dodgeRollStartup = 0.3f;
     [SerializeField] Vector2 dodgeDirection = new Vector2(1, 0.5f);
     [SerializeField] float invincibilityTime;
@@ -76,10 +76,9 @@ public class PlayerLocomotion : MonoBehaviour
             HandleClimbing();
         }
         HandleHurtLaunch(playerHealth.playerHurtState);
-        HandleDodge();
     }
 
-    private void HandleDodge()
+    public void HandleDodge()
     {
         if (playerInput.performDodge != 0 && !isDodging && isGrounded) 
         {
@@ -201,30 +200,28 @@ public class PlayerLocomotion : MonoBehaviour
 
     private void HandleGroundedCheck()
     {
-        Collider2D grounded = Physics2D.OverlapCircle(playerPosition + playerData.groundCheckOffset, playerData.groundCheckRadius, playerData.groundLayer);
-        isGrounded = grounded;
-        if (grounded && grounded.CompareTag("Slope") && playerCollider.IsTouching(grounded))
-        {
-            isOnSlope = true;
-        }
-        else { isOnSlope = false; }
-
-        if (playerCollider.IsTouchingLayers(playerData.platform))
-        {
-            onOneWayPlatform = true;
-            if(grounded) oneWayPlatform = grounded.gameObject;
-            Debug.Log("player is on a platform: " + oneWayPlatform.name);
-        }
-        else
-        {
-            onOneWayPlatform = false;
-        }
+        Collider2D footCollider = Physics2D.OverlapCircle(playerPosition + playerData.groundCheckOffset, playerData.groundCheckRadius);
+        isGrounded = footCollider;
 
         if (isGrounded)
         {
             timeSinceFalling = 0;
             landingRecoveryTimer += Time.fixedDeltaTime;
+
+            if (footCollider.CompareTag("Slope") && playerCollider.IsTouching(footCollider)) isOnSlope = true;
+            else { isOnSlope = false; }
+
+            if (footCollider.CompareTag("Enemy")) Debug.Log("*** BOUNCE ***");
         }
+        
+
+        if (playerCollider.IsTouchingLayers(playerData.platform))
+        {
+            onOneWayPlatform = true;
+            if(footCollider) oneWayPlatform = footCollider.gameObject;
+            Debug.Log("player is on a platform: " + oneWayPlatform.name);
+        }
+        else { onOneWayPlatform = false; }
 
         if(landingRecoveryTimer >= playerData.jumpCooldown)
         {

@@ -34,6 +34,7 @@ public class PlayerManager : MonoBehaviour
 
     private void FixedUpdate()
     {
+        playerLocomotion.HandleDodge();
         if (playerAttack.isMeleeAttacking) return;
         playerLocomotion.HandleAllMovement();   
     }

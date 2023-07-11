@@ -3,20 +3,24 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class EnemyDetection : MonoBehaviour, IEventListener
+public class EnemyDetection : MonoBehaviour
 {
     Enemy enemy;
     EnemyData data;
+    EnemyMovement enemyMovement;
     public Transform player;
     public bool playerFound = false;
-    public bool attackReady = false;
-    [SerializeField] GameEvent attackEnded;
+    public bool paused = false;
 
     [SerializeField] GameObject exclamation;
     [SerializeField] float reactionTime;
+    [SerializeField] float pauseDuration;
+    [SerializeField] float transitionTime;
+
     void Awake()
     {
         enemy = GetComponent<Enemy>();
+        enemyMovement = GetComponent<EnemyMovement>();
         data = enemy.enemyData;
     }
     
@@ -43,16 +47,48 @@ public class EnemyDetection : MonoBehaviour, IEventListener
             player = collider.transform;
         }
     }
-    public void DetectTargetsWithinAttackRange()
+    IEnumerator PauseBeforeTurnAround(Vector2 direction)
     {
-        Collider2D[] targetsInAttackRange = Physics2D.OverlapCircleAll(transform.position, data.attackRange, data.detectionLayer);
-
-        if (targetsInAttackRange.Length > 0 && !attackReady)
+        paused = true;
+        exclamation.SetActive(true);
+        while (paused)
         {
-            attackReady = true;
+            yield return new WaitForSeconds(pauseDuration);
+            if (direction.x > 0 && !enemyMovement.isFacingRight)
+            {
+                enemyMovement.FlipTransform();
+            }
+            else if (direction.x < 0 && enemyMovement.isFacingRight)
+            {
+                enemyMovement.FlipTransform();
+            }
+            exclamation.SetActive(false);
+            yield return new WaitForSeconds(transitionTime);
+            paused = false;
+        }
+    }
+    public void ShootPlayerDetectionRaycast()
+    {
+        Vector2 pos = transform.position;
+        if (player != null)
+        {
+            Vector2 playerPos = player.position;
+            Vector2 directionToPlayer = playerPos - pos;
+
+            Vector2 castPoint = new Vector2(transform.position.x, transform.position.y + FOVOffset);
+            Vector2 rayDirection = Vector2.zero;
+            if(enemyMovement.isFacingRight) rayDirection = Vector2.right;
+            else { rayDirection = Vector2.left; }
+            RaycastHit2D ray = Physics2D.Raycast(castPoint, rayDirection, data.detectionRadius, data.detectionLayer);
+
+            if (!ray)
+            {
+                StartCoroutine(PauseBeforeTurnAround(directionToPlayer));
+            }
         }
     }
 
+    [SerializeField] float FOVOffset = 0.3f;
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.yellow;
@@ -62,17 +98,4 @@ public class EnemyDetection : MonoBehaviour, IEventListener
         Gizmos.DrawWireSphere(transform.position, data.attackRange);
     }
 
-
-    private void OnEnable()
-    {
-        attackEnded?.RegisterListener(this);
-    }
-    private void OnDisable()
-    {
-        attackEnded?.UnregisterListener(this);  
-    }
-    public void OnEventRaised(GameEvent gameEvent)
-    {
-        if(gameEvent == attackEnded) attackReady = false;
-    }
 }

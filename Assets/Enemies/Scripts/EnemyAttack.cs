@@ -2,14 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyAttack : MonoBehaviour, IEventListener
+public class EnemyAttack : MonoBehaviour
 {
     [SerializeField] Transform hitbox;
     public float hitboxRadius;
     public LayerMask playerLayer;
-    [SerializeField] bool hitboxEnabled = false;
-    [SerializeField] GameEvent enableHitbox;
-    [SerializeField] GameEvent attackEnded;
+    [SerializeField] bool hitboxEnabled = true;
+    [SerializeField] float hitboxCooldownTime = 1f;
 
     public float attackKnockback = 500f;
     Vector2 knockbackDirection= Vector2.zero;
@@ -31,6 +30,17 @@ public class EnemyAttack : MonoBehaviour, IEventListener
                 if (playerRb != null) playerRb.AddForce(knockbackDirection * attackKnockback * 1000);
             }
             hitboxEnabled = false;
+            StartCoroutine(ActivateHitbox());
+        }
+    }
+
+    private IEnumerator ActivateHitbox()
+    {
+        WaitForSeconds cooldown = new WaitForSeconds(hitboxCooldownTime);
+        while (!hitboxEnabled)
+        {
+            yield return cooldown;
+            hitboxEnabled = true;
         }
     }
 
@@ -38,20 +48,5 @@ public class EnemyAttack : MonoBehaviour, IEventListener
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(hitbox.position, hitboxRadius);
-    }
-    private void OnEnable()
-    {
-        enableHitbox?.RegisterListener(this);
-        attackEnded?.RegisterListener(this);
-    }
-    private void OnDisable()
-    {
-        enableHitbox?.UnregisterListener(this); 
-        attackEnded?.UnregisterListener(this);
-    }
-    public void OnEventRaised(GameEvent gameEvent)
-    {
-        if(gameEvent == attackEnded) hitboxEnabled = false;
-        if (gameEvent == enableHitbox) hitboxEnabled = true;
     }
 }

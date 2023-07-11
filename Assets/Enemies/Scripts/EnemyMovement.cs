@@ -12,23 +12,18 @@ public class EnemyMovement : MonoBehaviour
     Rigidbody2D enemyRigidbody;
 
     public bool isFacingRight = false;
+
     void Awake()
     {
         enemy = GetComponent<Enemy>();
         data = enemy.enemyData;
         enemyDetection = GetComponent<EnemyDetection>();
         enemyRigidbody = GetComponent<Rigidbody2D>();
-
     }
 
-    private void Update()
+    public void MoveTowardsTarget(Transform _target)
     {
-        if (enemyRigidbody.velocity.x < 0 && isFacingRight) Flip();
-        else if (enemyRigidbody.velocity.x > 0 && !isFacingRight) Flip();
-    }
-    public void MoveTowardsTarget()
-    {
-        target = enemyDetection.player;
+        target = _target;
         Vector2 targetPosition = target.position;
         Vector2 enemyPosition = transform.position;
         Vector2 directionToTarget = new Vector2(targetPosition.x - enemyPosition.x, 0);
@@ -36,7 +31,12 @@ public class EnemyMovement : MonoBehaviour
         enemyRigidbody.velocity = directionToTarget.normalized * data.speed * Time.deltaTime;
     }
 
-    public void Flip()
+    public void PauseMovement()
+    {
+        enemyRigidbody.velocity = Vector2.zero;
+    }
+
+    public void FlipTransform()
     {
         isFacingRight = !isFacingRight;
         float xScale = transform.localScale.x;

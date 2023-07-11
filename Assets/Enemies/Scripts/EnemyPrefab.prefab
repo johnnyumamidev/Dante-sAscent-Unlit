@@ -14,6 +14,8 @@ GameObject:
   - component: {fileID: 4775431888258771490}
   - component: {fileID: 3189294764293242023}
   - component: {fileID: -9082828556361619708}
+  - component: {fileID: 8451427126187355883}
+  - component: {fileID: -5945733899494718507}
   m_Layer: 8
   m_Name: EnemyPrefab
   m_TagString: Enemy
@@ -95,6 +97,9 @@ MonoBehaviour:
   flashTime: 0.05
   damageEffectLength: 0.25
   isHurt: 0
+  healthDepleted:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &3189294764293242023
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -120,6 +125,46 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a906db026f3c77748ab9ca432b6b5fd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 0}
+  playerFound: 0
+  attackReady: 0
+  attackEnded: {fileID: 0}
+  exclamation: {fileID: 0}
+  reactionTime: 0
+--- !u!114 &8451427126187355883
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1224511333958590296}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 795fb1f98a67c6b4faa1329d61072046, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isFacingRight: 0
+--- !u!114 &-5945733899494718507
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1224511333958590296}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0193163a802194748bd025cd77a11f0b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hitbox: {fileID: 0}
+  hitboxRadius: 0
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  hitboxEnabled: 0
+  enableHitbox: {fileID: 0}
+  attackEnded: {fileID: 0}
+  attackKnockback: 500
 --- !u!1 &1793644776437963361
 GameObject:
   m_ObjectHideFlags: 0
@@ -132,6 +177,7 @@ GameObject:
   - component: {fileID: 571200886519256273}
   - component: {fileID: 7830251842232611196}
   - component: {fileID: 4775431888721016597}
+  - component: {fileID: 3031851310256638801}
   m_Layer: 0
   m_Name: sprite
   m_TagString: Untagged
@@ -278,6 +324,24 @@ SpriteMask:
   m_BackSortingOrder: 0
   m_IsCustomRangeActive: 0
   m_SpriteSortPoint: 0
+--- !u!114 &3031851310256638801
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1793644776437963361}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fa89b28554ea3f4daaeca6b6b7f4977, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parent: {fileID: 0}
+  animator: {fileID: 0}
+  animStates: []
+  animStateIndex: 0
+  attackEnded: {fileID: 0}
+  enableHitbox: {fileID: 0}
 --- !u!1 &4775431888828957594
 GameObject:
   m_ObjectHideFlags: 0
