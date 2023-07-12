@@ -10,6 +10,12 @@ TagManager:
   - Slope
   - Enemy
   - HItbox
+  - Stop
+  - Elevator
+  - PlayerSpawn
+  - Wall
+  - Cell
+  - EnemySpawn
   layers:
   - Default
   - TransparentFX
@@ -46,4 +52,10 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: BG
+    uniqueID: 690466805
+    locked: 0
+  - name: Units
+    uniqueID: 1011272545
     locked: 0

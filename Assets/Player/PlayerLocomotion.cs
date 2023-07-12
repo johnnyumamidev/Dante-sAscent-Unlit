@@ -83,6 +83,16 @@ public class PlayerLocomotion : MonoBehaviour
         {
             StartCoroutine(DodgeRollCooldown());
         }
+
+        if (isDodging)
+        {
+            Collider2D[] wallCheck = Physics2D.OverlapCircleAll(playerInteraction.interactionHitbox.position, 0.25f, playerData.groundLayer);
+
+            if(wallCheck.Length > 0)
+            {
+                rigidBody.velocity = new Vector2(0, rigidBody.velocity.y);
+            }
+        }
     }
     private IEnumerator DodgeRollCooldown()
     {
@@ -94,7 +104,6 @@ public class PlayerLocomotion : MonoBehaviour
             dodgeDirection.x *= -1;
         
         rigidBody.AddForce(dodgeDirection * playerData.dodgeForce, ForceMode2D.Impulse);
-        Collider2D playerCollider = GetComponent<Collider2D>();
         playerCollider.isTrigger = true;
         yield return new WaitForSeconds(invincibilityTime);
         playerCollider.isTrigger = false;

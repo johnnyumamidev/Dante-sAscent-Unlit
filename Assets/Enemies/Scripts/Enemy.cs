@@ -103,7 +103,7 @@ public class Enemy : MonoBehaviour
                 Debug.Log(transform.name + " hit ground");
                 DisableCollisions(rb, col);
             }
-        }
+        } 
         else
         {
             DisableCollisions(rb, col);
