@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class EnemyAnimation : MonoBehaviour
 {
+    Enemy enemy;
+    EnemyData data;
     [SerializeField] Transform parent;
     public Animator animator;
     public List<string> animStates;
@@ -13,7 +15,10 @@ public class EnemyAnimation : MonoBehaviour
 
     void Awake()
     {
+        enemy = GetComponentInParent<Enemy>();
+        data = enemy.enemyData;
         animator = GetComponent<Animator>();
+        if(data.animatorController != null) animator.runtimeAnimatorController = data.animatorController;
         parent = transform.parent;
     }
     private void Start()

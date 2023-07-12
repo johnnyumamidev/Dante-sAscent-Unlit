@@ -7,7 +7,6 @@ public class EnemyMovement : MonoBehaviour
     Enemy enemy;
     EnemyData data;
 
-    EnemyDetection enemyDetection;
     Transform target;
     Rigidbody2D enemyRigidbody;
 
@@ -17,8 +16,9 @@ public class EnemyMovement : MonoBehaviour
     {
         enemy = GetComponent<Enemy>();
         data = enemy.enemyData;
-        enemyDetection = GetComponent<EnemyDetection>();
         enemyRigidbody = GetComponent<Rigidbody2D>();
+
+        if (data.enemyType == "Flying") enemyRigidbody.isKinematic = true;
     }
 
     public void MoveTowardsTarget(Transform _target)
@@ -26,7 +26,9 @@ public class EnemyMovement : MonoBehaviour
         target = _target;
         Vector2 targetPosition = target.position;
         Vector2 enemyPosition = transform.position;
+
         Vector2 directionToTarget = new Vector2(targetPosition.x - enemyPosition.x, 0);
+        if(data.enemyType == "Flying") { directionToTarget = targetPosition - enemyPosition; }
 
         enemyRigidbody.velocity = directionToTarget.normalized * data.speed * Time.deltaTime;
     }

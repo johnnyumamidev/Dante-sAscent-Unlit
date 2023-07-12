@@ -94,6 +94,24 @@ public class Enemy : MonoBehaviour
     {
         Rigidbody2D rb = GetComponent<Rigidbody2D>();
         Collider2D col = GetComponent<Collider2D>();
+        if (enemyData.enemyType == "Flying")
+        {
+            rb.isKinematic = false;
+            rb.gravityScale = enemyData.weight;
+            if (col.IsTouchingLayers(enemyData.ground))
+            {
+                Debug.Log(transform.name + " hit ground");
+                DisableCollisions(rb, col);
+            }
+        }
+        else
+        {
+            DisableCollisions(rb, col);
+        }
+    }
+
+    private static void DisableCollisions(Rigidbody2D rb, Collider2D col)
+    {
         rb.isKinematic = true;
         rb.constraints = RigidbodyConstraints2D.FreezePosition;
         col.isTrigger = true;

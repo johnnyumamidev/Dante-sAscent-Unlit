@@ -12,6 +12,8 @@ public class EnemyData : ScriptableObject
 
     [Header("Movement")]
     public float speed;
+    public LayerMask ground;
+    public float weight;
 
     [Header("Health")]
     public int maxHealth;
