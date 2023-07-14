@@ -14,8 +14,8 @@ TagManager:
   - Elevator
   - PlayerSpawn
   - Wall
-  - Cell
   - EnemySpawn
+  - Tile
   layers:
   - Default
   - TransparentFX
@@ -58,4 +58,7 @@ TagManager:
     locked: 0
   - name: Units
     uniqueID: 1011272545
+    locked: 0
+  - name: UI
+    uniqueID: 1283815989
     locked: 0

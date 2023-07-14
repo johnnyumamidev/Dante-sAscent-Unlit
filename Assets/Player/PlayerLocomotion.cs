@@ -171,7 +171,7 @@ public class PlayerLocomotion : MonoBehaviour
             aerialDrift = playerInput.movementInput.x * playerData.aerialDriftModifier;
             if (chain != null && climbChainCollider.IsTouching(chain)) return;
             //aerial drift ->
-            if (playerInput.movementInput.x != 0 && rigidBody.velocity.x <= playerData.maxAerialSpeed) { rigidBody.velocity += new Vector2(aerialDrift, 0); }
+            if (playerInput.movementInput.x != 0 && Mathf.Abs(rigidBody.velocity.x) <= playerData.maxAerialSpeed) { rigidBody.velocity += new Vector2(aerialDrift, 0); }
             return;
         }
         

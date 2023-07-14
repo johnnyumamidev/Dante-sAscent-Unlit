@@ -14,7 +14,7 @@ public class Enemy : MonoBehaviour
     DestructibleObject destructibleObj;
 
     bool noHealthRemaining;
-    bool stunned = false;
+    [SerializeField] bool stunned = false;
     bool taunting = false;
     [SerializeField] float stunDuration;
 
@@ -114,7 +114,7 @@ public class Enemy : MonoBehaviour
     {
         rb.isKinematic = true;
         rb.constraints = RigidbodyConstraints2D.FreezePosition;
-        col.isTrigger = true;
+        col.enabled = false;
     }
 
     private IEnumerator StunTimer()

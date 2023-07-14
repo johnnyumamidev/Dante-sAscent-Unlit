@@ -12,11 +12,13 @@ public class EnemyAnimation : MonoBehaviour
     public int animStateIndex;
     [SerializeField] GameEvent attackEnded;
     [SerializeField] GameEvent enableHitbox;
-
+    SpriteRenderer spriteRenderer;
+    [SerializeField] SpriteRenderer shadow;
     void Awake()
     {
         enemy = GetComponentInParent<Enemy>();
         data = enemy.enemyData;
+        spriteRenderer = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
         if(data.animatorController != null) animator.runtimeAnimatorController = data.animatorController;
         parent = transform.parent;
@@ -39,6 +41,11 @@ public class EnemyAnimation : MonoBehaviour
     void Update()
     {
         animator.CrossFade(animStates[animStateIndex], 0, 0);
+    }
+
+    private void LateUpdate()
+    {
+        shadow.sprite = spriteRenderer.sprite;
     }
 
     // Attack animation events //

@@ -19,7 +19,7 @@ MonoBehaviour:
   playerMass: 3
   maxSpeed: 50
   moveSpeed: 325
-  jumpForce: 65
+  jumpForce: 58
   dodgeForce: 22
   groundCheckRadius: 0.1
   groundLayer:
@@ -32,9 +32,9 @@ MonoBehaviour:
   maxJumps: 1
   coyoteTime: 0.3
   landingRecoveryTimer: 0.06
-  jumpCooldown: 0.3
-  aerialDriftModifier: 0.02
-  maxAerialSpeed: 0.5
-  jumpReleaseTimeAllowance: 0.1
+  jumpCooldown: 0.6
+  aerialDriftModifier: 0.6
+  maxAerialSpeed: 8
+  jumpReleaseTimeAllowance: 0.05
   climbSpeed: 24
   relaseChainForce: 0.6

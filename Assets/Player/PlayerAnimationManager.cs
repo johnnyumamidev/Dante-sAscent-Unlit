@@ -101,7 +101,6 @@ public class PlayerAnimationManager : MonoBehaviour, IEventListener
         comboReady = value;
         isAttacking = value;
         if (!comboReady) currentComboStep = 0;
-        Debug.Log("combo ready: " + value + "/" + currentComboStep);
     }
 
     public void IncreaseComboStep()

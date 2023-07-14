@@ -13,6 +13,7 @@ public class DestructibleObject : MonoBehaviour,IDamageable
     Rigidbody2D objectRigidbody;
 
     [SerializeField] GameObject damageMask;
+    SpriteRenderer damageMaskRenderer;
     public float flashTime = 0.1f;
     public float damageEffectLength = 1f;
     [SerializeField] bool isHurt = false;
@@ -22,6 +23,7 @@ public class DestructibleObject : MonoBehaviour,IDamageable
     private void Awake()
     {
         damageMask.SetActive(false);
+        damageMaskRenderer = damageMask.GetComponent<SpriteRenderer>();
         objectRigidbody = GetComponent<Rigidbody2D>();  
     }
     private void Start()
@@ -40,7 +42,6 @@ public class DestructibleObject : MonoBehaviour,IDamageable
 
     private void Update()
     {
-        spriteMask.sprite = spriteRenderer.sprite;
         objectHealth = Mathf.Clamp(objectHealth, 0, maxObjectHealth);
         if (objectHealth <= 0)
         {
@@ -56,6 +57,11 @@ public class DestructibleObject : MonoBehaviour,IDamageable
         {
             timer = 0;
         }
+    }
+    private void LateUpdate()
+    {
+        damageMaskRenderer.sprite = spriteRenderer.sprite;
+        spriteMask.sprite = spriteRenderer.sprite;
     }
 
     IEnumerator HurtFlash()
